@@ -1,18 +1,35 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    
+    <div v-if="posts.length>0">
+         <ProjectsList :posts="posts"></ProjectsList>
+    </div>
+    <div v-else>
+      <LoadingSpinner></LoadingSpinner>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import LoadingSpinner from './LoadingSpinner'
+import { ref } from '@vue/reactivity'
 
+import getPosts from "../composables/getPosts"
+import ProjectsList from '../components/ProjectsList'
 export default {
   name: 'HomeView',
   components: {
-    HelloWorld
+    LoadingSpinner,
+    ProjectsList,      },
+  setup(){
+      let {posts,error,load}=getPosts()
+
+
+    load()
+    return {  posts,error   };
+      
+
   }
+
 }
 </script>
